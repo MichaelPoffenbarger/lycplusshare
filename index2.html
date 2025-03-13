@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annual City Partners - Servolution Network</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #002B7F;
+            --accent-red: #E31B23;
+            --scrollbar-color: #555;
+            --scrollbar-background: #f1f1f1;
+            --scrollbar-thumb: #555;
+            --secondary-blue: #5d729c;
+        }
+
+        body {
+            background: rgba(255, 255, 255, 0.219);
+            overflow-y: hidden;
+        }
+
+        .top-bar {
+            background-color: var(--primary-blue);
+            color: rgb(46, 136, 189);
+            padding: 5px 0;
+            font-size: 14px;
+        }
+
+        .top-bar a {
+            color: white;
+            text-decoration: none;
+            padding: 0 10px;
+            border-right: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .navbar {
+            padding: 15px 0;
+            background: white;
+            transition: none;
+        }
+
+        .navbar.fixed-top {
+            transition: none;
+        }
+
+        .filter-buttons {
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .filter-buttons.fixed-top {
+            transition: none;
+        }
+
+        .filter-btn {
+            margin: 5px;
+            padding: 8px 16px;
+            border: none;
+            background: white;
+            color: var(--primary-blue);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #1a4294 100%);
+            padding: 60px 0;
+            color: rgb(19, 54, 209);
+            position: relative;
+            overflow: hidden;
+            opacity: 0; /* Start hidden */
+            animation: fadeIn 1s forwards; /* Apply fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1; /* Fade to fully visible */
+            }
+        }
+
+        h5 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+        }
+
+        .partner-card {
+            
+            border-radius: 20px;
+            
+            padding: 1rem;
+            
+            margin-left: 1%;
+            width: 98%;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+            border-style: inset;
+            position: relative;
+        }
+
+        .partner-card.hidden {
+            display: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 22px 0 rgba(31, 38, 135, 0.041);
+            color: rgb(255, 255, 255);
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px 0 rgba(46, 46, 46, 0.425);
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--primary-blue);
+        }
+
+        .tag {
+            background: var(--primary-blue);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            color: rgb(255, 255, 255);
+            font-size: 0.9rem;
+            margin: 0.25rem;
+            transition: all 0.3s ease;
+            border-style: inset;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tag:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+            color: rgb(0, 0, 0);
+        }
+
+        
+
+        
+
+        .disclaimer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #E31B23;
+            color: white;
+            padding: 5px 0;
+            z-index: 1000;
+            transform: translateY(calc(100% - 40px));
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .disclaimer-bar.expanded {
+            transform: translateY(0);
+        }
+
+        .disclaimer-toggle {
+            position: absolute;
+            top: -30px;
+            right: 20px;
+            background: rgba(231, 37, 3, 0.781);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 5px 5px 0 0;
+            z-index: 1000;
+        }
+
+        .disclaimer-content {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 991px) {
+            .filter-buttons {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 15px;
+            }
+        }
+
+        .main-content {
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar styles */
+        .main-content::-webkit-scrollbar {
+            width: 12px; /* Width of the scrollbar */
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Background of the scrollbar track */
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: var(--primary-blue); /* Color of the scrollbar thumb */
+            border-radius: 10px; /* Rounded corners for the thumb */
+        }
+
+        .main-content::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Color of the thumb on hover */
+        }
+        .filter-buttons::-webkit-scrollbar {
+            width: 12px; /* Width of the scrollbar */
+        }
+
+        .filter-buttons::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Background of the scrollbar track */
+        }
+
+        .filter-buttons::-webkit-scrollbar-thumb {
+            background: var(--primary-blue); /* Color of the scrollbar thumb */
+            border-radius: 10px; /* Rounded corners for the thumb */
+        }
+
+        .filter-buttons::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Color of the thumb on hover */
+        }
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+        body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: var(--secondary-blue);
+            
+        }
+        .mobile-filter-toggle {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 5%;
+            transform: translateY(-50%);
+            background: #E31B23;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            z-index: 1000;
+            border: none;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        .mobile-filter-menu {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 280px;
+            background: white;
+            z-index: 1001;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-filter-menu.show {
+            transform: translateX(0);
+        }
+
+        .mobile-filter-close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #E31B23;
+        }
+
+        @media (max-width: 768px) {
+            .filter-buttons.desktop {
+                display: none;
+            }
+
+            .mobile-filter-toggle {
+                display: block;
+            }
+
+            .mobile-filter-menu {
+                display: block;
+            }
+
+            .main-content {
+                width: 100%;
+                padding: 0 15px;
+            }
+            p {
+                font-size: 14px;
+            }
+        }
+
+        .dropdown {
+            position: static;
+        }
+        
+        .dropdown-menu {
+            z-index: 9999 !important;
+            position: absolute !important;
+            transform: none !important;
+        }
+        
+        .partner-card {
+            position: relative;
+            overflow: visible !important;
+        }
+        
+        .card {
+            border: none !important;
+        }
+        
+        .card.rounded-3 {
+            border: none !important;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Filter Buttons -->
+    
+    
+    
+<div class="search-bar-container text-center">
+    <div class="search-bar col-md-12 col-lg-12 col-sm-12 pt-2">
+        <input type="text" id="search-input" placeholder="Search partners..." style="width: 50%; border-radius: 20px; border: 1px solid #002B7F; padding: 10px;">
+        <button id="search-button" class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+    </div>
+</div>
+
+    <!-- Main Content -->
+    <div class="container my-2 d-flex">
+        <!-- Desktop Filter Sidebar -->
+        <div class="filter-buttons desktop sticky-top col-md-4 col-lg-2 col-sm-4 text-center" style="z-index: 1; padding-bottom: 18px; padding-right: 10px;">
+            <div class="d-flex flex-column justify-content-center">
+                <h4 style="text-decoration: underline;" style="font-size: 18px; font-family: 'Poppins', sans-serif;">Categories</h4>
+                <button class="filter-btn active" data-category="all">All Partners</button>
+                <button class="filter-btn" data-category="construction & home services">Construction & Home Services</button>
+                <button class="filter-btn" data-category="automotive & transportation">Automotive & Transportation</button>
+                <button class="filter-btn" data-category="finance & insurance">Finance & Insurance</button>
+                <button class="filter-btn" data-category="real estate & professional services">Real Estate & Professional Services</button>
+                <button class="filter-btn" data-category="food & hospitality">Food & Hospitality</button>
+                <button class="filter-btn" data-category="health & wellness">Health & Wellness</button>
+                <button class="filter-btn" data-category="utilities & manufacturing">Utilities & Manufacturing</button>
+                <button class="filter-btn" data-category="media & marketing">Media & Marketing</button>
+                <button class="filter-btn" data-category="church partners">Church Partners</button>
+                <button class="filter-btn" data-category="other trades & services">Other Trades & Services</button>
+                <button class="filter-btn" data-category="retail">Retail</button>
+            </div>
+        </div>
+
+        <!-- Mobile Filter Toggle Button -->
+        <button class="mobile-filter-toggle" aria-label="Toggle filters menu">
+            <i class="fas fa-filter"></i>
+        </button>
+
+        <!-- Mobile Filter Menu -->
+        <div class="mobile-filter-menu text-center">
+            <button class="mobile-filter-close" aria-label="Close filters menu">
+                <i class="fas fa-times"></i>
+            </button>
+            <h4 style="text-decoration: underline; margin-bottom: 20px;">Categories</h4>
+                <button class="filter-btn active" data-category="all">All Partners</button>
+                <button class="filter-btn" data-category="construction & home services">Construction & Home Services</button>
+                <button class="filter-btn" data-category="automotive & transportation">Automotive & Transportation</button>
+                <button class="filter-btn" data-category="finance & insurance">Finance & Insurance</button>
+                <button class="filter-btn" data-category="real estate & professional services">Real Estate & Professional Services</button>
+                <button class="filter-btn" data-category="food & hospitality">Food & Hospitality</button>
+                <button class="filter-btn" data-category="health & wellness">Health & Wellness</button>
+                <button class="filter-btn" data-category="utilities & manufacturing">Utilities & Manufacturing</button>
+                <button class="filter-btn" data-category="media & marketing">Media & Marketing</button>
+                <button class="filter-btn" data-category="church partners">Church Partners</button>
+                <button class="filter-btn" data-category="other trades & services">Other Trades & Services</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content col-md-8 col-lg-10 col-sm-8">
+            <div class="row" id="partners-grid">
+                <!-- Dynamic content goes here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Disclaimer Bar -->
+    <div class="disclaimer-bar">
+        <button class="disclaimer-toggle">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+        <div class="container">
+            <div class="disclaimer-content">
+                <h4 class="mb-3">DISCLAIMER</h4>
+                <p>Servolution Network values its partners but cannot guarantee any warranties on the goods or services of Love YOUR City Partners companies. By using these partners, you acknowledge that Servolution Network is not responsible for their offerings. It is your responsibility to verify the pricing, quality, and performance of each company. For issues, contact the partner directly. If unresolved, provide feedback to us.</p>
+                <p class="mb-0">This list is a way for Servolution Network to thank businesses that have partnered with us while simultaneously serving the community with recommendations to people we have worked alongside. We aim to maintain and grow our alliance to better serve the community. Thank you for visiting our page.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let partnersData = []; // Store partners data
+
+            // Load partners data
+            $.getJSON('data/partners.json', function(data) {
+                partnersData = data.partners; // Save data to variable
+                populatePartners(partnersData); // Populate initial partners grid
+            });
+
+            function populatePartners(partners) {
+                const partnersGrid = $('#partners-grid');
+                partnersGrid.empty(); // Clear existing content
+
+                partners.forEach(partner => {
+                    const partnerCard = renderPartnerCard(partner);
+                    partnersGrid.append(partnerCard);
+                });
+            }
+
+            function renderPartnerCard(partner) {
+                // First, ensure partner has an ID
+                console.log('Rendering partner:', partner); // Debug log
+
+                return `
+                    <div class="col-lg-12 col-md-6 mb-4 partner-card" data-category="${partner.category || ''}">
+                        <div class="card h-100" data-partner-id="${partner.id || ''}">
+                            <div class="card rounded-3 h-100" style="box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;">
+                                <div class="row g-0 h-100">
+                                    <!-- Left side: Image -->
+                                    <div class="col-12 col-lg-3 d-flex align-items-center justify-content-center p-3">
+                                        <img src="${partner.image}" alt="${partner.name}" class="img-fluid" style="max-width: 100%; max-height: 120px;">
+                                    </div>
+         
+        <!-- Right side: Content -->
+        <div class="col-lg-9 col-md-12 col-sm-12;">
+            <div class="card-body py-3 px-3 d-flex flex-column h-100">
+                <!-- Partner name -->
+                <h6 class="card-title mb-1 fw-bold">${partner.name}</h6>
+                
+                <!-- Tags as simple text -->
+                <div class="d-flex flex-wrap mt-2 mb-2">
+                    ${partner.tags.slice(0, 3).map(tag => `<span class="tag" style="font-size: 0.67rem; padding: 0.3rem 0.6rem;">${tag}</span>`).join('')}
+                    ${partner.tags.length > 3 ? `<span class="tag" style="font-size: 0.6rem; padding: 0.1rem 0.6rem;">...</span>` : ''}
+                </div>
+                <p class="card-text small text-muted mb-2 mt-2">
+                    ${partner.description}
+                </p>
+                <div class="d-flex align-items-center mt-2">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    <p class="card-text small text-muted mb-2">
+                        ${partner.address}
+                    </p>
+                </div>
+                <div class="d-flex align-items-center mt-2 mb-2">
+                    <i class="fas fa-phone me-2"></i>
+                    <p class="card-text small text-muted mb-2">
+                        ${partner.phone}
+                    </p>
+                </div>
+                <!-- Actions -->
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <a href="${'http://' + partner.website || '#'}" class="btn btn-sm btn-link pr-3 text-decoration-none" target="_blank">
+                        <i class="fas fa-globe ms-1" style="font-size: 24px;""></i> 
+                    </a>
+                    <a href="${partner.facebook ? 'https://' + partner.facebook : '#'}" class="btn btn-sm btn-link p-0 text-decoration-none" target="_blank">
+                        <i class="fab fa-facebook-f me-1 small" style="font-size: 24px;"></i> 
+                    </a>
+                    <a href="${'http://' + partner.instagram || '#'}" class="btn btn-sm btn-link p-0 text-decoration-none" target="_blank">
+                        <i class="fab fa-instagram me-1 small" style="font-size: 24px;"></i> 
+                    </a>
+                    
+                    <div class="dropdown">
+                        
+                        <button class="btn btn-sm btn-link p-0 text-decoration-none" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-share-alt" style="font-size: 24px;"></i>
+                        </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li><a class="dropdown-item share-btn" href="#" data-platform="facebook" 
+                                                        data-partner='${JSON.stringify({name: partner.name, website: partner.website || ''})}'>
+                                                    <i class="fab fa-facebook-f me-2"></i> Facebook
+                                                     </a></li>
+                                                    <li><a class="dropdown-item share-btn" href="#" data-platform="twitter" 
+                                                        data-partner='${JSON.stringify({name: partner.name, website: partner.website || ''})}'>
+                                                    <i class="fab fa-twitter me-2"></i> Twitter
+                                                    </a></li>
+                                                    <li><a class="dropdown-item share-btn" href="#" data-platform="whatsapp" 
+                                                         data-partner='${JSON.stringify({name: partner.name, website: partner.website || ''})}'>
+                                                    <i class="fab fa-whatsapp me-2"></i> WhatsApp
+                                                    </a></li>
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        <li><a class="dropdown-item share-btn" href="#" data-platform="copyLink" 
+                                                            data-partner='${JSON.stringify({name: partner.name, website: partner.website || ''})}'>
+                                                        <i class="fas fa-link me-2"></i> Copy Link
+                                                    </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Search functionality
+            $('#search-input').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                const filteredPartners = partnersData.filter(partner => 
+                    partner.name.toLowerCase().includes(searchTerm) || 
+                    partner.tags.some(tag => tag.toLowerCase().includes(searchTerm)) // Check tags
+                );
+                populatePartners(filteredPartners); // Populate grid with filtered partners
+            });
+
+            // Filter functionality
+            $('.filter-btn').click(function() {
+                const category = $(this).data('category');
+                console.log('Filter clicked:', category); // Debug log
+                
+                // Update active state of filter buttons
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+                
+                if (category === 'all') {
+                    $('.partner-card').fadeIn();
+                } else {
+                    $('.partner-card').each(function() {
+                        const cardCategory = $(this).data('category');
+                        console.log('Card category:', cardCategory); // Debug log
+                        
+                        if (cardCategory === category) {
+                            $(this).fadeIn();
+                        } else {
+                            $(this).fadeOut();
+                        }
+                    });
+                }
+            });
+
+            $('.mobile-filter-toggle').click(function() {
+                $('.mobile-filter-menu').addClass('show');
+                $('body').css('overflow', 'hidden'); // Prevent scrolling when menu is open
+            });
+
+            $('.mobile-filter-close').click(function() {
+                $('.mobile-filter-menu').removeClass('show');
+                $('body').css('overflow', ''); // Restore scrolling
+            });
+
+            // Handle filter clicks (both mobile and desktop)
+            $('.filter-btn').click(function() {
+                const category = $(this).data('category');
+                $('.filter-btn').removeClass('active');
+                $('.filter-btn[data-category="' + category + '"]').addClass('active');
+                
+                // Close mobile menu after selection
+                $('.mobile-filter-menu').removeClass('show');
+                $('body').css('overflow', '');
+                
+                // Your existing filter logic here
+                loadPartners(category);
+            });
+
+            // Disclaimer toggle
+            $('.disclaimer-toggle').click(function() {
+                const disclaimerBar = $('.disclaimer-bar');
+                const isExpanded = disclaimerBar.hasClass('expanded');
+                
+                disclaimerBar.toggleClass('expanded');
+                $(this).html(isExpanded ? 
+                    '<i class="fas fa-chevron-up"></i>' : 
+                    '<i class="fas fa-chevron-down"></i>'
+                );
+            });
+
+            
+
+            // Sticky navbar (without smooth scroll)
+            
+
+            // Mobile menu collapse
+            $('.navbar-nav>li>a').on('click', function(){
+                $('.navbar-collapse').collapse('hide');
+            });
+
+            // Modified share button click handler
+            $(document).on('click', '.share-btn', async function(e) {
+                e.preventDefault();
+                
+                const platform = $(this).data('platform');
+                const partner = $(this).data('partner');
+                
+                console.log('Share clicked:', { platform, partner }); // Debug log
+                
+                if (!partner || !partner.name) {
+                    console.error('Invalid partner data:', partner);
+                    showToast('Error', 'Unable to share. Invalid partner data.');
+                    return;
+                }
+                
+                try {
+                    const shareData = {
+                        title: `Check out ${partner.name}!`,
+                        text: `Learn more about ${partner.name}`,
+                        url: partner.website || window.location.href
+                    };
+                    
+                    switch (platform) {
+                        case 'copyLink':
+                            await navigator.clipboard.writeText(shareData.url);
+                            showToast('Success', 'Link copied to clipboard!');
+                            break;
+                            
+                        case 'facebook':
+                            window.open(
+                                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`,
+                                'share',
+                                'width=600,height=400,location=0,menubar=0'
+                            );
+                            break;
+                            
+                        case 'twitter':
+                            window.open(
+                                `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.title)}&url=${encodeURIComponent(shareData.url)}`,
+                                'share',
+                                'width=600,height=400,location=0,menubar=0'
+                            );
+                            break;
+                            
+                        case 'whatsapp':
+                            window.open(
+                                `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.title + '\n' + shareData.url)}`,
+                                'share',
+                                'width=600,height=400,location=0,menubar=0'
+                            );
+                            break;
+                    }
+                } catch (error) {
+                    console.error('Share error:', error);
+                    showToast('Error', 'Failed to share. Please try again.');
+                }
+            });
+
+            // Toast notification function
+            function showToast(title, message) {
+                Swal.fire({
+                    title: title,
+                    text: message,
+                    icon: title.toLowerCase() === 'success' ? 'success' : 'error',
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }
+
+            $('.dropdown-toggle').on('shown.bs.dropdown', function () {
+                const $dropdownMenu = $(this).next('.dropdown-menu');
+                const dropdownBottom = $dropdownMenu.offset().top + $dropdownMenu.outerHeight();
+                const viewportBottom = $(window).scrollTop() + $(window).height();
+                
+                if (dropdownBottom > viewportBottom) {
+                    $dropdownMenu.css({
+                        top: 'auto',
+                        bottom: '100%'
+                    });
+                }
+            });
+        });
+
+        // Add some CSS for the filtering
+        const style = document.createElement('style');
+        style.textContent = `
+            .partner-card {
+                transition: opacity 0.3s ease;
+            }
+            
+            .filter-btn {
+                transition: all 0.2s ease;
+            }
+            
+            .filter-btn.active {
+                background-color: #007bff;
+                color: white;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
